@@ -1,0 +1,11 @@
+[package]
+name = "word_generator"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+warp_wasi = "0.3"
+tokio_wasi = { version = "1.21", features = ["full"] }
+random_word = { version = "0.4.3", features = ["en"] }
+serde_derive = "1.0"
+serde = "1.0"

@@ -1,0 +1,41 @@
+apiVersion: node.k8s.io/v1
+kind: RuntimeClass
+metadata:
+  name: wasmedge
+handler: wasmedge
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wasm-word-generator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: word_generator
+  template:
+    metadata:
+      labels:
+        app: word_generator
+      annotations:
+        module.wasm.image/variant: compat-smart
+    spec:
+      containers:
+        - name: word-generator
+          image: deepu105/word_generator_wasi:latest
+          ports:
+            - containerPort: 8090
+      runtimeClassName: wasmedge
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: word-generator-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: word_generator
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8090

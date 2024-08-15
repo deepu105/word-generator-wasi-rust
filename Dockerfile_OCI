@@ -1,0 +1,3 @@
+FROM scratch
+ADD target/wasm32-wasi/release/word_generator.wasm /
+CMD ["/word_generator.wasm"]
